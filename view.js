@@ -1,7 +1,47 @@
 // ---- Define your dialogs  and panels here ----
+id_prefix = "studio"
+result = define_new_effective_permissions(id_prefix, add_info_col = true, which_permissions = null)
+$('#sidepanel').append(result)
+
+selected_user = "user"
+element = define_new_user_select_field(id_prefix, selected_user, on_user_change = function(selected_user){
+    $('#studio').attr('username', selected_user)
+    $('#studio').attr('filepath', '/C/presentation_documents/important_file.txt')
+})
+$('#sidepanel').append(element)
+
+single_dialog = define_new_dialog(id_prefix, title='', options = {})
+$('.perm_info').click(function(){
+    console.log('clicked!')
+        // stuff that should happen on click goes here
+    single_dialog.dialog('open')
+
+    console.log($(this))
+    console.log($(this).attr('permission_name'))
+    console.log($('#studio').attr('username'))
+    console.log($('#studio').attr('filepath'))
+    
+    my_filename_var = $('#studio').attr('filepath')
+    my_file_obj_var = path_to_file[my_filename_var]
+    my_username_var = $('#studio').attr('username')
+    my_user_obj_var = all_users[my_username_var]
+    permission_to_check = $(this).attr('permission_name')
+
+    result = allow_user_action(my_file_obj_var, my_user_obj_var, permission_to_check, explain_why = true)
+    print_result = get_explanation_text(result)
+    console.log(print_result)
+    single_dialog.empty()
+    single_dialog.append(print_result)
+})
 
 
 
+
+// $('.fa fa-info-circle perm_info').click(function(){
+//     console.log('clicked!')
+//     // stuff that should happen on click goes here
+
+// })
 // ---- Display file structure ----
 
 // (recursively) makes and returns an html element (wrapped in a jquery object) for a given file object
